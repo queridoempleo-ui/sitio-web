@@ -301,6 +301,29 @@ ul,ol{padding:0;list-style:none}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}.note,.chip-li,.btn{transition:none}
 }
+
+/* Movimiento: una entrada al cargar + marcas del CV que se dibujan al llegar */
+@keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes drop{from{opacity:0;translate:0 -70px;rotate:-5deg}60%{opacity:1}to{opacity:1;translate:0 0;rotate:0deg}}
+@keyframes stick{from{opacity:0;scale:1.35}to{opacity:1;scale:1}}
+@keyframes rise{from{opacity:0;translate:0 18px}to{opacity:1;translate:0 0}}
+.circled path{stroke-dasharray:1;stroke-dashoffset:0;animation:draw .9s cubic-bezier(.6,.1,.3,1) 1s backwards}
+.hero-lead,.hero-cta{animation:rise .6s ease-out backwards}
+.hero-lead{animation-delay:.25s}.hero-cta{animation-delay:.4s}
+.polaroid{animation:drop .8s cubic-bezier(.2,.9,.3,1.1) .2s backwards}
+.note-1{animation:stick .35s ease-out 1.1s backwards}
+.chip-li{animation:stick .35s ease-out 1.3s backwards}
+.note-3{animation:stick .35s ease-out 1.5s backwards}
+.js .loop path{stroke-dasharray:1;stroke-dashoffset:1}
+.js .cv-stage.vista .loop path{animation:draw .9s ease-out .5s forwards}
+.js .strike{scale:0 1;transform-origin:left}
+.js .cv-stage.vista .strike{scale:1 1;transition:scale .6s ease-out .1s}
+.js .hand{opacity:0}
+.js .cv-stage.vista .hand{opacity:1;transition:opacity .5s ease-out 1.1s}
+@media (prefers-reduced-motion:reduce){
+  .circled path,.hero-lead,.hero-cta,.polaroid,.note,.chip-li{animation:none}
+  .js .loop path{stroke-dashoffset:0}.js .strike{scale:1 1}.js .hand{opacity:1}
+}
 </style>
 </head>
 <body>
@@ -324,7 +347,7 @@ ul,ol{padding:0;list-style:none}
 <section class="hero" id="inicio">
   <div class="hero-in">
     <div class="hero-copy">
-      <h1 class="display">Coach laboral para profesionales con <span class="circled">experiencia.<svg viewBox="0 0 300 120" preserveAspectRatio="none" fill="none" aria-hidden="true"><path d="M14 64 C 10 22, 96 8, 168 10 C 244 12, 294 32, 290 64 C 286 100, 214 114, 136 111 C 58 108, 12 92, 16 56" stroke="#D63F2A" stroke-width="5" stroke-linecap="round"/></svg></span></h1>
+      <h1 class="display">Coach laboral para profesionales con <span class="circled">experiencia.<svg viewBox="0 0 300 120" preserveAspectRatio="none" fill="none" aria-hidden="true"><path pathLength="1" d="M14 64 C 10 22, 96 8, 168 10 C 244 12, 294 32, 290 64 C 286 100, 214 114, 136 111 C 58 108, 12 92, 16 56" stroke="#D63F2A" stroke-width="5" stroke-linecap="round"/></svg></span></h1>
       <p class="hero-lead">Te acompaño en tu búsqueda de empleo: ordenamos tu CV y tu LinkedIn, mostramos tu trayectoria con claridad y llegás a cada entrevista de trabajo con más preparación.</p>
       <div class="hero-cta">
         <a class="btn btn-dark" href="https://wa.me/5491173597166">Contame tu situación
@@ -373,7 +396,7 @@ ul,ol{padding:0;list-style:none}
           <span class="bar" style="width:94%"></span>
           <span class="bar t" style="width:38%;margin-top:10px"></span>
           <span class="bar" style="width:100%"></span>
-          <span class="bar" style="width:76%"><svg class="loop" viewBox="0 0 200 30" preserveAspectRatio="none" fill="none"><path d="M6 16 C 6 4, 60 2, 100 3 C 150 4, 196 8, 194 18 C 192 28, 120 28, 70 27 C 24 26, 6 24, 6 14" stroke="#D63F2A" stroke-width="3" stroke-linecap="round"/></svg></span>
+          <span class="bar" style="width:76%"><svg class="loop" viewBox="0 0 200 30" preserveAspectRatio="none" fill="none"><path pathLength="1" d="M6 16 C 6 4, 60 2, 100 3 C 150 4, 196 8, 194 18 C 192 28, 120 28, 70 27 C 24 26, 6 24, 6 14" stroke="#D63F2A" stroke-width="3" stroke-linecap="round"/></svg></span>
           <span class="bar" style="width:90%"></span>
           <span class="bar t" style="width:30%;margin-top:10px"></span>
           <span class="bar" style="width:82%"></span>
@@ -508,5 +531,14 @@ ul,ol{padding:0;list-style:none}
   </div>
 </footer>
 
+<script>
+(function(){
+  var d=document.documentElement;
+  var st=document.querySelector('.cv-stage');
+  if(!st||!('IntersectionObserver' in window)||matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  d.classList.add('js');
+  new IntersectionObserver(function(e,o){e.forEach(function(x){if(x.isIntersecting){st.classList.add('vista');o.disconnect();}});},{threshold:.35}).observe(st);
+})();
+</script>
 </body>
 </html>

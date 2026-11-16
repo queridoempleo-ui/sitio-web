@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solorellana-queridoempleo.vercel.app/sitemap.xml
